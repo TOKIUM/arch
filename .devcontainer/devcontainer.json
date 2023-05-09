@@ -1,0 +1,10 @@
+{
+	"name": "@tokium/artch-sentry",
+	"image": "mcr.microsoft.com/devcontainers/base:jammy",
+	"features": {
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "16"
+		}
+	},
+	"postCreateCommand": "npm install"
+}
