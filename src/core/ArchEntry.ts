@@ -1,5 +1,5 @@
-import * as yaml from 'js-yaml';
 import { ArchModule } from './ArchModule';
+import YAML from 'yaml'
 
 export class ArchEntry {
   constructor(
@@ -9,7 +9,7 @@ export class ArchEntry {
   ) {}
 
   static fromYaml(yamlStr: string): ArchEntry[] {
-    const loaded = yaml.load(yamlStr)
+    const loaded = YAML.parse(yamlStr);
     if (loaded === undefined || !(loaded instanceof Array)) return [];
 
     return loaded.map(ArchEntry.fromObject).filter((entry): entry is ArchEntry => entry !== undefined);
