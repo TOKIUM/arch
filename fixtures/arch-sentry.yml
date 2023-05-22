@@ -1,0 +1,10 @@
+- module: fixtures
+  description: fixtures module
+  children:
+    - module: valid
+      description: valid module
+    - module: invalid
+      description: invalid module
+      children:
+        - module: invalid-child
+          description: invalid child module
