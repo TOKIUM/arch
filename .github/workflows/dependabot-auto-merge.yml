@@ -1,0 +1,28 @@
+name: dependabot auto merge
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    timeout-minutes: 13
+    steps:
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.TOKIUM_GA_APP_ID }}
+          private_key: ${{ secrets.TOKIUM_GA_PRIVATE_KEY  }}
+      - name: Approve & enable auto-merge for Dependabot PR
+        run: |
+          gh pr review --approve "$PR_URL"
+          gh pr edit "$PR_URL" -t "(auto merged) $PR_TITLE"
+          gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
