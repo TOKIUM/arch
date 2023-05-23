@@ -4,11 +4,11 @@ import { ArchModule } from './ArchModule';
 describe('ArchEntry', () => {
   describe('fromYaml', () => {
     it('should be able to be created from YAML', () => {
-      const yamlStr = "- module: foo\n  description: Foo\n  children:\n  - module: bar\n    description: Bar\n    children: []\n";
+      const yamlStr = "- module: foo\n  description: Foo\n  allow: false\n  children:\n  - module: bar\n    description: Bar\n    children: []\n";
       const actual = ArchEntry.fromYaml(yamlStr);
       expect(actual).toEqual([
-        new ArchEntry(new ArchModule('foo'), 'Foo', [
-          new ArchEntry(new ArchModule('bar'), 'Bar', []),
+        new ArchEntry(new ArchModule('foo'), 'Foo', false, [
+          new ArchEntry(new ArchModule('bar'), 'Bar', true, []),
         ]),
       ]);
     });
@@ -28,8 +28,8 @@ describe('ArchEntry', () => {
         ],
       };
       const actual = ArchEntry.fromObject(object);
-      expect(actual).toEqual(new ArchEntry(new ArchModule('foo'), 'Foo', [
-        new ArchEntry(new ArchModule('bar'), 'Bar', []),
+      expect(actual).toEqual(new ArchEntry(new ArchModule('foo'), 'Foo', true, [
+        new ArchEntry(new ArchModule('bar'), 'Bar', true, []),
       ]));
     });
     it('should be empty children from invalid children object', () => {
@@ -39,7 +39,7 @@ describe('ArchEntry', () => {
         children: 'invalid'
       };
       const actual = ArchEntry.fromObject(object);
-      expect(actual).toEqual(new ArchEntry(new ArchModule('foo'), 'Foo', []));
+      expect(actual).toEqual(new ArchEntry(new ArchModule('foo'), 'Foo', true, []));
     });
     it('should be undefined from invalid object', () => {
       const object = {
@@ -52,12 +52,26 @@ describe('ArchEntry', () => {
   });
 
   describe('match', () => {
+    describe('when not allowed', () => {
+      it('should return false', () => {
+        const entry = new ArchEntry(
+          new ArchModule('foo'),
+          'Foo',
+          false,
+          [],
+        );
+        const archModules = [new ArchModule('foo')];
+        const actual = entry.match(archModules);
+        expect(actual).toBe(false);
+      });
+    });
     describe('when arch modules shorter than entry module', () => {
       it('should return false', () => {
         const entry = new ArchEntry(
           new ArchModule('foo'),
           'Foo',
-          [new ArchEntry(new ArchModule('bar'), 'Bar', [])],
+          true,
+          [new ArchEntry(new ArchModule('bar'), 'Bar', true, [])],
         );
         const archModules = [new ArchModule('foo')];
         const actual = entry.match(archModules);
@@ -70,6 +84,7 @@ describe('ArchEntry', () => {
           const entry = new ArchEntry(
             new ArchModule('foo'),
             'Foo',
+            true,
             [],
           );
           const archModules = [new ArchModule('foo'), new ArchModule('bar')];
@@ -82,7 +97,8 @@ describe('ArchEntry', () => {
           const entry = new ArchEntry(
             new ArchModule('foo'),
             'Foo',
-            [new ArchEntry(new ArchModule('bar'), 'Bar', [])],
+            true,
+            [new ArchEntry(new ArchModule('bar'), 'Bar', true, [])],
           );
           const archModules = [new ArchModule('foo'), new ArchModule('bar')];
           const actual = entry.match(archModules);
@@ -92,7 +108,8 @@ describe('ArchEntry', () => {
           const entry = new ArchEntry(
             new ArchModule('foo'),
             'Foo',
-            [new ArchEntry(new ArchModule('bar'), 'Bar', [])],
+            true,
+            [new ArchEntry(new ArchModule('bar'), 'Bar', true, [])],
           );
           const archModules = [new ArchModule('foo'), new ArchModule('baz')];
           const actual = entry.match(archModules);

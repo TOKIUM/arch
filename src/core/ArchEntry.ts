@@ -5,6 +5,7 @@ export class ArchEntry {
   constructor(
     public readonly module: ArchModule,
     public readonly description: string,
+    public readonly allow: boolean,
     public readonly children: ArchEntry[],
   ) {}
 
@@ -17,11 +18,12 @@ export class ArchEntry {
 
   static fromObject(object: any): ArchEntry | undefined {
     if (object.module === undefined || object.description === undefined) return undefined;
+    const allow = object.allow === undefined ? true : object.allow;
 
-    if (object.children === undefined || !(object.children instanceof Array)) return new ArchEntry(new ArchModule(object.module), object.description, []);
+    if (object.children === undefined || !(object.children instanceof Array)) return new ArchEntry(new ArchModule(object.module), object.description, allow, []);
 
     const children = object.children.map((child: any) => ArchEntry.fromObject(child)).filter((child): child is ArchEntry => child !== undefined); 
-    return new ArchEntry(new ArchModule(object.module), object.description, children);
+    return new ArchEntry(new ArchModule(object.module), object.description, allow, children);
   }
 
   match(archModules: ArchModule[]): boolean {
@@ -30,6 +32,8 @@ export class ArchEntry {
     const first = archModules[0];
 
     if (first.value !== this.module.value) return false;
+
+    if (this.allow === false) return false;
 
     if (this.children.length === 0) return true;
 
