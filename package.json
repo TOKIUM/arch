@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "bin": {
-    "arch": "./dist/index.js"
+    "arch": "./dist/command/index.js"
   },
   "keywords": [],
   "author": "Mulyu<mu0lyu@gmail.com>",
