@@ -13,7 +13,7 @@ import { CheckCommand } from './CheckCommend';
         (yargs) => {
           return yargs
             .array('input').alias('i', 'input').describe('input', 'Input directory path.').demandOption('input')
-            .string('config').alias('f', 'config').describe('config', 'File path for arch-sentry.yml')
+            .string('config').alias('f', 'config').describe('config', 'File path for arch.yml')
         },
         async (argv) => {
           const statusCode = await CheckCommand.execute(argv.config?.toString(), argv.input.map((v) => v.toString()));

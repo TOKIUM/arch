@@ -1,5 +1,5 @@
 {
-  "name": "@tokium/arch-sentry",
+  "name": "@tokium/arch",
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "bin": {
-    "dict": "./dist/index.js"
+    "arch": "./dist/index.js"
   },
   "keywords": [],
   "author": "Mulyu<mu0lyu@gmail.com>",

@@ -5,7 +5,7 @@ describe('CheckCommand', () => {
   describe('execute', () => {
     it('return 0 when valid', async () => {
       const actual = await CheckCommand.execute(
-        path.join('fixtures', 'arch-sentry.yml'),
+        path.join('fixtures', 'arch.yml'),
         [
           path.join('fixtures', 'valid'),
         ],
@@ -14,7 +14,7 @@ describe('CheckCommand', () => {
     });
     it('return 1 when invalid', async () => {
       const actual = await CheckCommand.execute(
-        path.join('fixtures', 'arch-sentry.yml'),
+        path.join('fixtures', 'arch.yml'),
         [
           path.join('fixtures', 'invalid'),
         ],

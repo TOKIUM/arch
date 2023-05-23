@@ -8,7 +8,7 @@ export class CheckCommand {
     settingPath: string | undefined,
     inputFilePaths: string[],
   ): Promise<number> {
-    const yaml = fs.readFileSync(settingPath ?? 'arch-sentry.yml', 'utf-8');
+    const yaml = fs.readFileSync(settingPath ?? 'arch.yml', 'utf-8');
     const archEntries = ArchEntry.fromYaml(yaml);
     const extractedPaths = inputFilePaths.flatMap(listFiles);
     const result = extractedPaths.flatMap((fp) => {
