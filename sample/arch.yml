@@ -1,11 +1,11 @@
 - module: example1
   description: description1
-  children:
+  submodules:
     - module: example11
       description: description11
     - module: example12
       description: description12
-      children:
+      submodules:
         - module: example121
           description: description121
 - module: example2

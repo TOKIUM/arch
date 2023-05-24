@@ -1,10 +1,14 @@
 - module: fixtures
   description: fixtures module
-  children:
+  submodules:
     - module: valid
       description: valid module
+      allow: all
+      submodules:
+        - module: valid-child
+          description: valid child module
     - module: invalid
       description: invalid module
-      children:
+      submodules:
         - module: invalid-child
           description: invalid child module
