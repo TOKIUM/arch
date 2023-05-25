@@ -8,7 +8,7 @@ describe('ArchEntry', () => {
       const actual = ArchEntry.fromYaml(yamlStr);
       expect(actual).toEqual([
         new ArchEntry(new ArchModule('foo'), 'Foo', [], [
-          new ArchEntry(new ArchModule('bar'), 'Bar', ['submodules'], []),
+          new ArchEntry(new ArchModule('bar'), 'Bar', ['files', 'submodules'], []),
         ]),
       ]);
     });
@@ -28,8 +28,8 @@ describe('ArchEntry', () => {
         ],
       };
       const actual = ArchEntry.fromObject(object);
-      expect(actual).toEqual(new ArchEntry(new ArchModule('foo'), 'Foo', ['submodules'], [
-        new ArchEntry(new ArchModule('bar'), 'Bar', ['submodules'], []),
+      expect(actual).toEqual(new ArchEntry(new ArchModule('foo'), 'Foo', ['files', 'submodules'], [
+        new ArchEntry(new ArchModule('bar'), 'Bar', ['files', 'submodules'], []),
       ]));
     });
     it('should be empty submodules from invalid submodules object', () => {
@@ -39,7 +39,7 @@ describe('ArchEntry', () => {
         submodules: 'invalid'
       };
       const actual = ArchEntry.fromObject(object);
-      expect(actual).toEqual(new ArchEntry(new ArchModule('foo'), 'Foo', ['submodules'], []));
+      expect(actual).toEqual(new ArchEntry(new ArchModule('foo'), 'Foo', ['files', 'submodules'], []));
     });
     it('should be undefined from invalid object', () => {
       const object = {
@@ -113,7 +113,7 @@ describe('ArchEntry', () => {
             new ArchModule('foo'),
             'Foo',
             ['submodules'],
-            [new ArchEntry(new ArchModule('bar'), 'Bar', ['submodules'], [])],
+            [new ArchEntry(new ArchModule('bar'), 'Bar', ['files'], [])],
           );
           const archModules = [new ArchModule('foo'), new ArchModule('bar')];
           const actual = entry.match(archModules);

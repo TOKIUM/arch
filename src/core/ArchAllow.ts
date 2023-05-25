@@ -7,12 +7,10 @@ export const ArchAllow = {
         return ['files'];
       case 'submodules':
         return ['submodules'];
-      case 'all':
-        return ['files', 'submodules'];
       case 'none':
         return [];
-      default:
-        return ['submodules'];
+      default: // 'all'
+        return ['files', 'submodules'];
     }
   }
 }

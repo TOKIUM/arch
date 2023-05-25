@@ -9,6 +9,7 @@
           description: valid child module
     - module: invalid
       description: invalid module
+      allow: submodules
       submodules:
         - module: invalid-child
           description: invalid child module

@@ -34,16 +34,19 @@ export class ArchEntry {
     const first = archModules[0];
 
     if (first.value !== this.module.value) return false;
+    
+    const isFile = archModules.length === 1;
+    const isModule = archModules.length > 1;
 
-    // 何も許可されていないならば、すべて拒否
+    // 何も許可されていないならば、拒否
     if (this.allow.length === 0) return false;
-    // fileが許可されていて、最後のmoduleならばそのあとに続くのはファイルなので、許可
-    if (archModules.length === 1 && this.allow.includes('files')) return true;
-    // submoduleが許可されていなくて、最後のmoduleならばそのあとに続くのはsubmoduleなので、拒否
-    if (archModules.length > 1 && !this.allow.includes('submodules')) return false;
+    // ファイルならば、それ以降のモジュールは考慮不要 許可されているかどうかだけチェック
+    if (isFile) return this.allow.includes('files');
+    // モジュールならば、それ以降のモジュールは後で考慮するものの、モジュールが拒否されていないかチェック
+    if (isModule && !this.allow.includes('submodules')) return false;
 
-    // それ以上submoduleの指定がなければ、それ以下のmoduleはすべて許可
-    if (this.submodules.length === 0) return true;
+    // それ以上submoduleの指定がなければ、それ以下はすべて許可
+    if (isModule && this.submodules.length === 0) return true;
 
     const rest = archModules.slice(1);
     return this.submodules.some((child) => child.match(rest));
