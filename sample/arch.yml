@@ -1,12 +1,12 @@
-- module: example1
+- directory: example1
   description: description1
-  submodules:
-    - module: example11
+  subdirectories:
+    - directory: example11
       description: description11
-    - module: example12
+    - directory: example12
       description: description12
-      submodules:
-        - module: example121
+      subdirectories:
+        - directory: example121
           description: description121
-- module: example2
+- directory: example2
   description: description2

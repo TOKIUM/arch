@@ -1,15 +1,15 @@
-- module: fixtures
+- directory: fixtures
   description: fixtures module
-  submodules:
-    - module: valid
+  subdirectories:
+    - directory: valid
       description: valid module
       allow: all
-      submodules:
-        - module: valid-child
+      subdirectories:
+        - directory: valid-child
           description: valid child module
-    - module: invalid
+    - directory: invalid
       description: invalid module
-      allow: submodules
-      submodules:
-        - module: invalid-child
+      allow: subdirectories
+      subdirectories:
+        - directory: invalid-child
           description: invalid child module

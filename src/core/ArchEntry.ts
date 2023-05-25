@@ -1,13 +1,13 @@
 import { ArchAllow } from './ArchAllow';
-import { ArchModule } from './ArchModule';
+import { ArchDirectory } from './ArchDirectory';
 import YAML from 'yaml'
 
 export class ArchEntry {
   constructor(
-    public readonly module: ArchModule,
+    public readonly directory: ArchDirectory,
     public readonly description: string,
     public readonly allow: ArchAllow[],
-    public readonly submodules: ArchEntry[],
+    public readonly subdirectories: ArchEntry[],
   ) {}
 
   static fromYaml(yamlStr: string): ArchEntry[] {
@@ -18,37 +18,37 @@ export class ArchEntry {
   }
 
   static fromObject(object: any): ArchEntry | undefined {
-    if (object.module === undefined || object.description === undefined) return undefined;
+    if (object.directory === undefined || object.description === undefined) return undefined;
     const allowStr = object.allow === undefined ? '' : object.allow;
     const allow = ArchAllow.from(allowStr);
 
-    if (object.submodules === undefined || !(object.submodules instanceof Array)) return new ArchEntry(new ArchModule(object.module), object.description, allow, []);
+    if (object.subdirectories === undefined || !(object.subdirectories instanceof Array)) return new ArchEntry(new ArchDirectory(object.directory), object.description, allow, []);
 
-    const submodules = object.submodules.map((child: any) => ArchEntry.fromObject(child)).filter((child): child is ArchEntry => child !== undefined); 
-    return new ArchEntry(new ArchModule(object.module), object.description, allow, submodules);
+    const subdirectories = object.subdirectories.map((child: any) => ArchEntry.fromObject(child)).filter((child): child is ArchEntry => child !== undefined); 
+    return new ArchEntry(new ArchDirectory(object.directory), object.description, allow, subdirectories);
   }
 
-  match(archModules: ArchModule[]): boolean {
-    if (archModules.length === 0) return false;
+  match(archDirectories: ArchDirectory[]): boolean {
+    if (archDirectories.length === 0) return false;
 
-    const first = archModules[0];
+    const first = archDirectories[0];
 
-    if (first.value !== this.module.value) return false;
+    if (first.value !== this.directory.value) return false;
     
-    const isFile = archModules.length === 1;
-    const isModule = archModules.length > 1;
+    const isFile = archDirectories.length === 1;
+    const isDirectory = archDirectories.length > 1;
 
     // 何も許可されていないならば、拒否
     if (this.allow.length === 0) return false;
     // ファイルならば、それ以降のモジュールは考慮不要 許可されているかどうかだけチェック
     if (isFile) return this.allow.includes('files');
     // モジュールならば、それ以降のモジュールは後で考慮するものの、モジュールが拒否されていないかチェック
-    if (isModule && !this.allow.includes('submodules')) return false;
+    if (isDirectory && !this.allow.includes('subdirectories')) return false;
 
-    // それ以上submoduleの指定がなければ、それ以下はすべて許可
-    if (isModule && this.submodules.length === 0) return true;
+    // それ以上subdirectoriesの指定がなければ、それ以下はすべて許可
+    if (isDirectory && this.subdirectories.length === 0) return true;
 
-    const rest = archModules.slice(1);
-    return this.submodules.some((child) => child.match(rest));
+    const rest = archDirectories.slice(1);
+    return this.subdirectories.some((child) => child.match(rest));
   }
 }

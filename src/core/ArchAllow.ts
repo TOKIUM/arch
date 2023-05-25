@@ -1,16 +1,16 @@
-export type ArchAllow = 'files' | 'submodules';
+export type ArchAllow = 'files' | 'subdirectories';
 
 export const ArchAllow = {
   from(allowStr: string): ArchAllow[] {
     switch (allowStr) {
       case 'files':
         return ['files'];
-      case 'submodules':
-        return ['submodules'];
+      case 'subdirectories':
+        return ['subdirectories'];
       case 'none':
         return [];
       default: // 'all'
-        return ['files', 'submodules'];
+        return ['files', 'subdirectories'];
     }
   }
 }

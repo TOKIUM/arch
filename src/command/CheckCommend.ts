@@ -1,6 +1,6 @@
 import { ArchEntry } from '../core/ArchEntry';
 import * as fs from 'fs';
-import { ArchModule } from '../core/ArchModule';
+import { ArchDirectory } from '../core/ArchDirectory';
 import { listFiles } from '../util/files';
 
 export class CheckCommand {
@@ -12,8 +12,8 @@ export class CheckCommand {
     const archEntries = ArchEntry.fromYaml(yaml);
     const extractedPaths = inputFilePaths.flatMap(listFiles);
     const result = extractedPaths.flatMap((fp) => {
-      const modules = ArchModule.fromFilePath(fp);
-      const found = archEntries.find((entry) => entry.match(modules));
+      const directories = ArchDirectory.fromFilePath(fp);
+      const found = archEntries.find((entry) => entry.match(directories));
 
       if (found === undefined) { return [fp]; }
 
