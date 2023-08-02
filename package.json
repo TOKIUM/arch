@@ -1,6 +1,6 @@
 {
   "name": "@tokiumjp/arch",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Add arch command.",
   "license": "MIT",
   "main": "dist/index.js",
