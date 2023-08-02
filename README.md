@@ -53,6 +53,13 @@ inputにはディレクトリ・ファイルを指定でき、ディレクトリ
 $ arch check --config <path/to/arch.yml> --input <path/to/dir>
 ```
 
+### coverage
+coverageコマンドで、指定したアーキテクチャ定義のyamlファイルと、実際のファイル配置の乖離を計測することができます。
+inputにはディレクトリ・ファイルを指定でき、ディレクトリを指定した場合は配下のファイルを再帰的にチェックします。
+```bash
+$ arch coverage --config <path/to/arch.yml> --input <path/to/dir>
+```
+
 ## 開発
 ### 環境構築
 devcontainerを用意しています。vscodeの`Remote-Containers`拡張をインストールして、`Remote-Containers: Reopen Folder in Container`を実行すると、開発環境が構築されます。

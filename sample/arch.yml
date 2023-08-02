@@ -5,6 +5,7 @@
       description: description11
     - directory: example12
       description: description12
+      allow: subdirectories
       subdirectories:
         - directory: example121
           description: description121

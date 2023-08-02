@@ -3,6 +3,8 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { CheckCommand } from './CheckCommend';
+import { argv } from 'process';
+import { CoverageCommand } from './CoverageCommand';
 
 (async () => {
   try {
@@ -17,6 +19,18 @@ import { CheckCommand } from './CheckCommend';
         },
         async (argv) => {
           const statusCode = await CheckCommand.execute(argv.config?.toString(), argv.input.map((v) => v.toString()));
+          process.exit(statusCode);
+        },
+      ).command(
+        'coverage',
+        'Output coverage report.',
+        (yargs) => {
+          return yargs
+            .array('input').alias('i', 'input').describe('input', 'Input directory path.').demandOption('input')
+            .string('config').alias('f', 'config').describe('config', 'File path for arch.yml')
+        },
+        async (argv) => {
+          const statusCode = await CoverageCommand.execute(argv.config?.toString(), argv.input.map((v) => v.toString()));
           process.exit(statusCode);
         },
       ).parse();
