@@ -22,8 +22,8 @@ export class CoverageCommand {
     }, { valid: [], invalid: [] });
 
     console.log('Coverage report:');
-    console.log(`  - ${result.valid.length} valid files. (${(result.valid.length / extractedPaths.length * 100).toFixed(2)}%))`);
-    console.log(`  - ${result.invalid.length} invalid files. (${(result.invalid.length / extractedPaths.length * 100).toFixed(2)}%))`);
+    console.log(`  - ${result.valid.length} valid files. (${(result.valid.length / extractedPaths.length * 100).toFixed(2)}%)`);
+    console.log(`  - ${result.invalid.length} invalid files. (${(result.invalid.length / extractedPaths.length * 100).toFixed(2)}%)`);
 
     return 0;
   }
