@@ -1,0 +1,15 @@
+- directory: fixtures
+  description: fixtures module
+  subdirectories:
+    - directory: command
+      description: command module
+      allow: all
+      subdirectories: 
+        - directory: valid
+          description: valid module
+          allow: all
+          subdirectories:
+            - directory: valid-child
+              description: valid child module
+      includes:
+        - fixtures/command/arch-invalid.yml

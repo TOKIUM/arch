@@ -1,0 +1,6 @@
+- directory: invalid
+  description: invalid module
+  allow: subdirectories
+  subdirectories:
+    - directory: invalid-child
+      description: invalid child module

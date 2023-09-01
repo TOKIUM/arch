@@ -1,6 +1,5 @@
 import { ArchAllow } from './ArchAllow';
 import { ArchDirectory } from './ArchDirectory';
-import YAML from 'yaml'
 
 export class ArchEntry {
   constructor(
@@ -9,24 +8,6 @@ export class ArchEntry {
     public readonly allow: ArchAllow[],
     public readonly subdirectories: ArchEntry[],
   ) {}
-
-  static fromYaml(yamlStr: string): ArchEntry[] {
-    const loaded = YAML.parse(yamlStr);
-    if (loaded === undefined || !(loaded instanceof Array)) return [];
-
-    return loaded.map(ArchEntry.fromObject).filter((entry): entry is ArchEntry => entry !== undefined);
-  }
-
-  static fromObject(object: any): ArchEntry | undefined {
-    if (object.directory === undefined || object.description === undefined) return undefined;
-    const allowStr = object.allow === undefined ? '' : object.allow;
-    const allow = ArchAllow.from(allowStr);
-
-    if (object.subdirectories === undefined || !(object.subdirectories instanceof Array)) return new ArchEntry(new ArchDirectory(object.directory), object.description, allow, []);
-
-    const subdirectories = object.subdirectories.map((child: any) => ArchEntry.fromObject(child)).filter((child): child is ArchEntry => child !== undefined); 
-    return new ArchEntry(new ArchDirectory(object.directory), object.description, allow, subdirectories);
-  }
 
   match(archDirectories: ArchDirectory[]): boolean {
     if (archDirectories.length === 0) return false;

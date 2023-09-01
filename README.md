@@ -41,6 +41,32 @@ Invalid files:
 - src/controllers/posts/edit.js
 ```
 
+ファイル配置を許可するには、subdirectoriesに配置するか、別のymlファイルを作成してincludesに指定します。
+```yml
+# arch-post.yml
+- directory: posts
+  description: 投稿に関するディレクトリです。
+  allow: files
+```
+
+```yml
+# arch.yml
+- directory: src
+  description: ソースコードのルートディレクトリです。
+  allow: all
+  subdirectories:
+    - directory: controllers
+      description: コントローラーに関するディレクトリです。
+      allow: subdirectories
+      subdirectories:
+        - directories: users
+          description: ユーザーに関するコントローラーです。
+          allow: files
+      includes:
+        - arch-post.yml
+
+```
+
 ## 使い方
 ```bash
 $ npm install -g @tokiumjp/arch

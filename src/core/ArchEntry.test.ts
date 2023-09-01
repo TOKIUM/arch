@@ -2,55 +2,6 @@ import { ArchEntry } from './ArchEntry';
 import { ArchDirectory } from './ArchDirectory';
 
 describe('ArchEntry', () => {
-  describe('fromYaml', () => {
-    it('should be able to be created from YAML', () => {
-      const yamlStr = "- directory: foo\n  description: Foo\n  allow: none\n  subdirectories:\n  - directory: bar\n    description: Bar\n    subdirectories: []\n";
-      const actual = ArchEntry.fromYaml(yamlStr);
-      expect(actual).toEqual([
-        new ArchEntry(new ArchDirectory('foo'), 'Foo', [], [
-          new ArchEntry(new ArchDirectory('bar'), 'Bar', ['files', 'subdirectories'], []),
-        ]),
-      ]);
-    });
-  });
-
-  describe('fromObject', () => {
-    it('should be able to be created from an object', () => {
-      const object = {
-        directory: 'foo',
-        description: 'Foo',
-        subdirectories: [
-          {
-            directory: 'bar',
-            description: 'Bar',
-            subdirectories: [],
-          },
-        ],
-      };
-      const actual = ArchEntry.fromObject(object);
-      expect(actual).toEqual(new ArchEntry(new ArchDirectory('foo'), 'Foo', ['files', 'subdirectories'], [
-        new ArchEntry(new ArchDirectory('bar'), 'Bar', ['files', 'subdirectories'], []),
-      ]));
-    });
-    it('should be empty subdirectories from invalid subdirectories object', () => {
-      const object = {
-        directory: 'foo',
-        description: 'Foo',
-        subdirectories: 'invalid'
-      };
-      const actual = ArchEntry.fromObject(object);
-      expect(actual).toEqual(new ArchEntry(new ArchDirectory('foo'), 'Foo', ['files', 'subdirectories'], []));
-    });
-    it('should be undefined from invalid object', () => {
-      const object = {
-        directory: 'foo',
-        invalid: 'Foo',
-      };
-      const actual = ArchEntry.fromObject(object);
-      expect(actual).toBeUndefined();
-    });
-  });
-
   describe('match', () => {
     describe('when not allowed', () => {
       it('should return false', () => {

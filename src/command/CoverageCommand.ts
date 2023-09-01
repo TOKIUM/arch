@@ -1,15 +1,13 @@
-import { ArchEntry } from '../core/ArchEntry';
-import * as fs from 'fs';
 import { ArchDirectory } from '../core/ArchDirectory';
 import { listFiles } from '../util/files';
+import { ArchEntryParser } from '../core/ArchEntryParser';
 
 export class CoverageCommand {
   static async execute(
     settingPath: string | undefined,
     inputFilePaths: string[],
   ): Promise<number> {
-    const yaml = fs.readFileSync(settingPath ?? 'arch.yml', 'utf-8');
-    const archEntries = ArchEntry.fromYaml(yaml);
+    const archEntries = ArchEntryParser.parse(settingPath);
     const extractedPaths = inputFilePaths.flatMap(listFiles);
     const result = extractedPaths.reduce((acc, curr) => {
       const directories = ArchDirectory.fromFilePath(curr);
