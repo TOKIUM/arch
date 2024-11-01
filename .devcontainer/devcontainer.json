@@ -3,7 +3,7 @@
 	"image": "mcr.microsoft.com/devcontainers/base:jammy",
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": {
-			"version": "20.12.1"
+			"version": "22.11.0"
 		}
 	},
 	"postCreateCommand": "npm install"
